@@ -73,8 +73,9 @@ config.window_decorations = 'RESIZE'
 -- Ctrl+Shift+T: new tab
 -- Leader-based splits/navigation (tmux-like): Ctrl+a then key
 -- Leader key
--- Ctrl+a is commonly used by shells/readline; use Ctrl+Space to avoid conflicts.
-config.leader = { key = 'Space', mods = 'CTRL', timeout_milliseconds = 1000 }
+-- Avoid Ctrl+a (readline) and Ctrl+Space (often bound by IME/window managers).
+-- Use Ctrl+g (rarely used interactively; similar to "cancel" in some tools).
+config.leader = { key = 'g', mods = 'CTRL', timeout_milliseconds = 1000 }
 
 config.keys = {
   { key = 'L', mods = 'CTRL|SHIFT', action = wezterm.action.ShowLauncher },
