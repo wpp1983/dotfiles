@@ -78,6 +78,10 @@ config.window_decorations = 'RESIZE'
 config.leader = { key = 'g', mods = 'CTRL', timeout_milliseconds = 1000 }
 
 config.keys = {
+  -- Clipboard
+  { key = 'C', mods = 'CTRL|SHIFT', action = wezterm.action.CopyTo 'Clipboard' },
+  { key = 'V', mods = 'CTRL|SHIFT', action = wezterm.action.PasteFrom 'Clipboard' },
+
   { key = 'L', mods = 'CTRL|SHIFT', action = wezterm.action.ShowLauncher },
   { key = 'T', mods = 'CTRL|SHIFT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
 
