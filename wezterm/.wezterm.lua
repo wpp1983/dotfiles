@@ -70,10 +70,29 @@ config.window_decorations = 'RESIZE'
 
 -- Keybindings
 -- Ctrl+Shift+L: open launcher (shows launch_menu entries, including WSL)
--- Ctrl+Shift+T: new tab (default)
+-- Ctrl+Shift+T: new tab
+-- Leader-based splits/navigation (tmux-like): Ctrl+a then key
+config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
+
 config.keys = {
   { key = 'L', mods = 'CTRL|SHIFT', action = wezterm.action.ShowLauncher },
   { key = 'T', mods = 'CTRL|SHIFT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
+
+  -- Splits
+  { key = '|', mods = 'LEADER|SHIFT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+  { key = '-', mods = 'LEADER',       action = wezterm.action.SplitVertical   { domain = 'CurrentPaneDomain' } },
+
+  -- Navigate panes
+  { key = 'h', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Left' },
+  { key = 'j', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Down' },
+  { key = 'k', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Up' },
+  { key = 'l', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Right' },
+
+  -- Close pane (confirm)
+  { key = 'x', mods = 'LEADER', action = wezterm.action.CloseCurrentPane { confirm = true } },
+
+  -- Zoom pane (toggle)
+  { key = 'z', mods = 'LEADER', action = wezterm.action.TogglePaneZoomState },
 }
 
 return config
