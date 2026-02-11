@@ -77,56 +77,10 @@ config.window_decorations = 'RESIZE'
 -- Use Ctrl+g (rarely used interactively; similar to "cancel" in some tools).
 config.leader = { key = 'g', mods = 'CTRL', timeout_milliseconds = 1000 }
 
--- Smart paste: if clipboard contains an image, save it to a file and paste the file path.
--- Also supports FileDropList (copied files) -> paste first file path.
-local function smart_paste(window, pane)
-  local ok, out, err = pcall(function()
-    return wezterm.run_child_process {
-      'pwsh.exe',
-      '-NoProfile',
-      '-Command',
-      [[
-Add-Type -AssemblyName System.Windows.Forms
-Add-Type -AssemblyName System.Drawing
-
-$dir = Join-Path $env:USERPROFILE 'Pictures\Screenshots'
-New-Item -ItemType Directory -Force -Path $dir | Out-Null
-
-if ([System.Windows.Forms.Clipboard]::ContainsFileDropList()) {
-  $list = [System.Windows.Forms.Clipboard]::GetFileDropList()
-  if ($list.Count -gt 0) { $list[0]; exit 0 }
-}
-
-if ([System.Windows.Forms.Clipboard]::ContainsImage()) {
-  $img = [System.Windows.Forms.Clipboard]::GetImage()
-  $name = 'wezterm-clip-' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '.png'
-  $path = Join-Path $dir $name
-  $img.Save($path, [System.Drawing.Imaging.ImageFormat]::Png)
-  $path
-  exit 0
-}
-
-# Fallback: paste text
-Get-Clipboard -Raw
-      ]],
-    }
-  end)
-
-  if ok and out and #out > 0 then
-    -- Normalize line endings and avoid trailing newlines
-    out = out:gsub('\r\n', '\n'):gsub('\r', '\n')
-    out = out:gsub('\n+$', '')
-    window:perform_action(wezterm.action.SendString(out), pane)
-  else
-    -- If something goes wrong, fall back to normal paste
-    window:perform_action(wezterm.action.PasteFrom 'Clipboard', pane)
-  end
-end
-
 config.keys = {
   -- Clipboard
   { key = 'C', mods = 'CTRL|SHIFT', action = wezterm.action.CopyTo 'Clipboard' },
-  { key = 'V', mods = 'CTRL|SHIFT', action = wezterm.action_callback(smart_paste) },
+  { key = 'V', mods = 'CTRL|SHIFT', action = wezterm.action.PasteFrom 'Clipboard' },
 
   { key = 'L', mods = 'CTRL|SHIFT', action = wezterm.action.ShowLauncher },
   { key = 'T', mods = 'CTRL|SHIFT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
