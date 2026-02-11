@@ -78,9 +78,14 @@ config.keys = {
   { key = 'L', mods = 'CTRL|SHIFT', action = wezterm.action.ShowLauncher },
   { key = 'T', mods = 'CTRL|SHIFT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
 
-  -- Splits
-  { key = '|', mods = 'LEADER|SHIFT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-  { key = '-', mods = 'LEADER',       action = wezterm.action.SplitVertical   { domain = 'CurrentPaneDomain' } },
+  -- Splits (tmux-like)
+  -- Note: For LEADER shortcuts, tap Ctrl+a then release Ctrl, then press the key.
+  { key = 'v', mods = 'LEADER', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+  { key = 's', mods = 'LEADER', action = wezterm.action.SplitVertical   { domain = 'CurrentPaneDomain' } },
+
+  -- Splits (direct, no leader; easier muscle memory on Windows)
+  { key = 'v', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+  { key = 's', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.SplitVertical   { domain = 'CurrentPaneDomain' } },
 
   -- Navigate panes
   { key = 'h', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Left' },
