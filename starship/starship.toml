@@ -1,0 +1,33 @@
+# Shared Starship config (Windows pwsh + WSL fish)
+# Location:
+#   Windows: C:\Users\admin\dotfiles\starship\starship.toml
+#   WSL:     /mnt/c/Users/admin/dotfiles/starship/starship.toml
+# Docs: https://starship.rs/config/
+
+add_newline = false
+command_timeout = 1000
+
+format = "$directory$git_branch$git_status$cmd_duration$character"
+
+[directory]
+truncate_to_repo = true
+truncation_length = 3
+style = "bold cyan"
+
+[git_branch]
+symbol = " "
+style = "bold purple"
+format = " [$symbol$branch]($style)"
+
+[git_status]
+style = "bold yellow"
+format = " [$all_status$ahead_behind]($style)"
+
+[cmd_duration]
+min_time = 800
+style = "bold green"
+format = " took [$duration]($style)"
+
+[character]
+success_symbol = "[❯](bold green) "
+error_symbol = "[❯](bold red) "
